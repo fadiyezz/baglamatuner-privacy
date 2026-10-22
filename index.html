@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Bağlama Tuner</title>
+<style>
+  :root { --ink: #2a2118; --muted: #6d6152; --accent: #a8742c; --bg: #fbf7f0; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 18px 56px; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  h1 { font-size: 26px; margin: 0; color: var(--accent); }
+  h2 { font-size: 19px; margin: 28px 0 8px; }
+  .date { color: var(--muted); font-style: italic; margin: 6px 0 18px; }
+  select { font: inherit; padding: 6px 10px; border-radius: 10px; border: 1px solid #d6cbb8; background: #fff; color: var(--ink); }
+  a { color: var(--accent); }
+  ul { padding-inline-start: 22px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="t-title"></h1>
+    <select id="lang" aria-label="Language"></select>
+  </header>
+  <p class="date" id="t-date"></p>
+  <div id="content"></div>
+</main>
+<script>
+const L = {
+ "en": {
+  "name": "English",
+  "title": "Privacy Policy — Bağlama Tuner",
+  "date": "Last updated: October 22, 2026",
+  "intro": "This privacy policy applies to the <b>Bağlama Tuner</b> mobile app (the \"App\"), developed and published by <b>Studio Ekin</b> (\"we\", \"us\"). By using the App, you agree to the practices described in this policy.",
+  "h_collect": "Information We Collect",
+  "collect": "We do not collect, store, or share any personal information directly. The App does not require registration and does not ask for your name, email address, or any other personal details.",
+  "h_mic": "Microphone",
+  "mic": "The App uses your device's microphone only to hear your instrument and measure its pitch while you tune. The sound is analysed in real time on your device; it is never recorded, saved, or sent to us or to any server. The microphone is used only while the tuner screen is open, and you can withdraw the permission at any time in your device settings.",
+  "h_ads": "Third-Party Services: Advertising",
+  "ads": "The App shows advertisements served by <b>Google AdMob</b>, a service provided by Google. AdMob may automatically collect and use certain data, including:",
+  "items": [
+   "Device identifiers (such as the Advertising ID)",
+   "IP address and approximate location",
+   "Device information (model, operating system version)",
+   "Ad interaction data (views, clicks)"
+  ],
+  "ads_use": "Google uses this data to show and measure advertisements. Learn more: <a href=\"https://policies.google.com/privacy\">Google Privacy Policy</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">How Google uses data from partner apps</a>.",
+  "consent": "In the European Economic Area, the United Kingdom, Switzerland and other regions where the law requires it, the App asks for your consent through Google's consent form before showing personalized ads. You can change your choice at any time with \"Privacy settings\" in the App's language menu (globe icon).",
+  "optout": "You can also turn off personalized ads on your device: on Android, Settings → Google → Ads; on iOS, Settings → Privacy & Security → Tracking.",
+  "h_local": "Data Stored on Your Device",
+  "local": "Your language choice is stored only on your device. It is never sent to us or to any server, and it is deleted when you uninstall the App.",
+  "h_children": "Children's Privacy",
+  "children": "The App is not directed at children under 13, and we do not knowingly collect personal information from children. Ads are served in line with Google AdMob policies. If you believe a child has provided personal information through the App, contact us and we will take appropriate action.",
+  "h_changes": "Changes to This Policy",
+  "changes": "We may update this privacy policy from time to time. Changes will be posted on this page with a new revision date.",
+  "h_contact": "Contact Us",
+  "contact": "If you have questions about this privacy policy, contact us at: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "tr": {
+  "name": "Türkçe",
+  "title": "Gizlilik Politikası — Bağlama Tuner",
+  "date": "Son güncelleme: 22 Ekim 2026",
+  "intro": "Bu gizlilik politikası, <b>Studio Ekin</b> (\"biz\") tarafından geliştirilen ve yayınlanan <b>Bağlama Tuner</b> mobil uygulaması (\"Uygulama\") için geçerlidir. Uygulamayı kullanarak bu politikada açıklanan uygulamaları kabul etmiş olursunuz.",
+  "h_collect": "Topladığımız Bilgiler",
+  "collect": "Doğrudan hiçbir kişisel bilgi toplamıyor, saklamıyor veya paylaşmıyoruz. Uygulama kayıt gerektirmez; adınızı, e-posta adresinizi veya başka bir kişisel bilginizi istemez.",
+  "h_mic": "Mikrofon",
+  "mic": "Uygulama, cihazınızın mikrofonunu yalnızca akort ederken çaldığınız sazı duymak ve perdesini ölçmek için kullanır. Ses cihazınızda anlık olarak işlenir; asla kaydedilmez, saklanmaz, bize veya herhangi bir sunucuya gönderilmez. Mikrofon yalnızca akort ekranı açıkken kullanılır; izni istediğiniz zaman cihaz ayarlarından geri alabilirsiniz.",
+  "h_ads": "Üçüncü Taraf Hizmetleri: Reklam",
+  "ads": "Uygulama, Google'ın bir hizmeti olan <b>Google AdMob</b> tarafından sunulan reklamlar gösterir. AdMob bazı verileri otomatik olarak toplayıp kullanabilir:",
+  "items": [
+   "Cihaz kimlikleri (Reklam Kimliği gibi)",
+   "IP adresi ve yaklaşık konum",
+   "Cihaz bilgileri (model, işletim sistemi sürümü)",
+   "Reklam etkileşim verileri (görüntüleme, tıklama)"
+  ],
+  "ads_use": "Google bu verileri reklam göstermek ve ölçmek için kullanır. Daha fazla bilgi: <a href=\"https://policies.google.com/privacy\">Google Gizlilik Politikası</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Google'ın iş ortağı uygulamalardan gelen verileri nasıl kullandığı</a>.",
+  "consent": "Avrupa Ekonomik Alanı, Birleşik Krallık, İsviçre ve yasanın gerektirdiği diğer bölgelerde Uygulama, kişiselleştirilmiş reklam göstermeden önce Google'ın izin formu ile onayınızı ister. Tercihinizi istediğiniz zaman Uygulamanın dil menüsündeki (dünya simgesi) \"Gizlilik ayarları\" ile değiştirebilirsiniz.",
+  "optout": "Kişiselleştirilmiş reklamları cihazınızdan da kapatabilirsiniz: Android'de Ayarlar → Google → Reklamlar; iOS'ta Ayarlar → Gizlilik ve Güvenlik → İzleme.",
+  "h_local": "Cihazınızda Saklanan Veriler",
+  "local": "Dil tercihiniz yalnızca cihazınızda saklanır. Bize veya herhangi bir sunucuya asla gönderilmez ve Uygulamayı kaldırdığınızda silinir.",
+  "h_children": "Çocukların Gizliliği",
+  "children": "Uygulama 13 yaşın altındaki çocuklara yönelik değildir ve çocuklardan bilerek kişisel bilgi toplamayız. Reklamlar Google AdMob politikalarına uygun şekilde sunulur. Bir çocuğun Uygulama üzerinden kişisel bilgi verdiğini düşünüyorsanız bizimle iletişime geçin, gerekli önlemleri alırız.",
+  "h_changes": "Bu Politikadaki Değişiklikler",
+  "changes": "Bu gizlilik politikasını zaman zaman güncelleyebiliriz. Değişiklikler bu sayfada yeni tarihle yayınlanır.",
+  "h_contact": "Bize Ulaşın",
+  "contact": "Bu gizlilik politikasıyla ilgili sorularınız için: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "de": {
+  "name": "Deutsch",
+  "title": "Datenschutzerklärung — Bağlama Tuner",
+  "date": "Zuletzt aktualisiert: 22. Oktober 2026",
+  "intro": "Diese Datenschutzerklärung gilt für die mobile App <b>Bağlama Tuner</b> (die „App“), entwickelt und veröffentlicht von <b>Studio Ekin</b> („wir“). Durch die Nutzung der App stimmen Sie den hier beschriebenen Praktiken zu.",
+  "h_collect": "Welche Daten wir erheben",
+  "collect": "Wir erheben, speichern oder teilen direkt keine personenbezogenen Daten. Die App erfordert keine Registrierung und fragt weder nach Ihrem Namen noch nach Ihrer E-Mail-Adresse oder anderen persönlichen Angaben.",
+  "h_mic": "Mikrofon",
+  "mic": "Die App nutzt das Mikrofon Ihres Geräts nur, um Ihr Instrument beim Stimmen zu hören und die Tonhöhe zu messen. Der Ton wird in Echtzeit auf Ihrem Gerät analysiert; er wird niemals aufgezeichnet, gespeichert oder an uns bzw. einen Server gesendet. Das Mikrofon wird nur verwendet, solange der Stimmbildschirm geöffnet ist. Sie können die Berechtigung jederzeit in den Geräteeinstellungen widerrufen.",
+  "h_ads": "Dienste Dritter: Werbung",
+  "ads": "Die App zeigt Werbung von <b>Google AdMob</b>, einem Dienst von Google. AdMob kann automatisch bestimmte Daten erheben und nutzen, darunter:",
+  "items": [
+   "Gerätekennungen (z. B. die Werbe-ID)",
+   "IP-Adresse und ungefährer Standort",
+   "Geräteinformationen (Modell, Betriebssystemversion)",
+   "Daten zur Interaktion mit Anzeigen (Aufrufe, Klicks)"
+  ],
+  "ads_use": "Google nutzt diese Daten, um Anzeigen auszuliefern und zu messen. Mehr dazu: <a href=\"https://policies.google.com/privacy\">Datenschutzerklärung von Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Wie Google Daten aus Partner-Apps verwendet</a>.",
+  "consent": "Im Europäischen Wirtschaftsraum, im Vereinigten Königreich, in der Schweiz und in anderen Regionen, in denen das Gesetz es verlangt, bittet die App vor personalisierter Werbung über das Einwilligungsformular von Google um Ihre Zustimmung. Sie können Ihre Wahl jederzeit unter „Datenschutzeinstellungen“ im Sprachmenü der App (Globus-Symbol) ändern.",
+  "optout": "Personalisierte Werbung können Sie auch auf Ihrem Gerät deaktivieren: unter Android in Einstellungen → Google → Anzeigen, unter iOS in Einstellungen → Datenschutz & Sicherheit → Tracking.",
+  "h_local": "Auf Ihrem Gerät gespeicherte Daten",
+  "local": "Ihre Sprachauswahl wird nur auf Ihrem Gerät gespeichert. Sie wird nie an uns oder einen Server gesendet und beim Deinstallieren der App gelöscht.",
+  "h_children": "Datenschutz von Kindern",
+  "children": "Die App richtet sich nicht an Kinder unter 13 Jahren, und wir erheben wissentlich keine personenbezogenen Daten von Kindern. Anzeigen werden gemäß den Richtlinien von Google AdMob ausgeliefert. Wenn Sie glauben, dass ein Kind über die App personenbezogene Daten angegeben hat, kontaktieren Sie uns, und wir ergreifen geeignete Maßnahmen.",
+  "h_changes": "Änderungen dieser Erklärung",
+  "changes": "Wir können diese Datenschutzerklärung gelegentlich aktualisieren. Änderungen werden auf dieser Seite mit neuem Datum veröffentlicht.",
+  "h_contact": "Kontakt",
+  "contact": "Bei Fragen zu dieser Datenschutzerklärung erreichen Sie uns unter: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "fr": {
+  "name": "Français",
+  "title": "Politique de confidentialité — Bağlama Tuner",
+  "date": "Dernière mise à jour : 22 octobre 2026",
+  "intro": "Cette politique de confidentialité s'applique à l'application mobile <b>Bağlama Tuner</b> (l'« Application »), développée et publiée par <b>Studio Ekin</b> (« nous »). En utilisant l'Application, vous acceptez les pratiques décrites dans cette politique.",
+  "h_collect": "Informations que nous collectons",
+  "collect": "Nous ne collectons, ne stockons et ne partageons directement aucune information personnelle. L'Application ne nécessite aucune inscription et ne demande ni votre nom, ni votre adresse e-mail, ni aucune autre donnée personnelle.",
+  "h_mic": "Microphone",
+  "mic": "L'Application utilise le microphone de votre appareil uniquement pour entendre votre instrument et mesurer sa hauteur pendant l'accordage. Le son est analysé en temps réel sur votre appareil ; il n'est jamais enregistré, conservé ni envoyé à nous ou à un serveur. Le microphone n'est utilisé que lorsque l'écran de l'accordeur est ouvert, et vous pouvez retirer l'autorisation à tout moment dans les réglages de l'appareil.",
+  "h_ads": "Services tiers : publicité",
+  "ads": "L'Application affiche des publicités fournies par <b>Google AdMob</b>, un service de Google. AdMob peut collecter et utiliser automatiquement certaines données, notamment :",
+  "items": [
+   "Identifiants de l'appareil (comme l'identifiant publicitaire)",
+   "Adresse IP et localisation approximative",
+   "Informations sur l'appareil (modèle, version du système)",
+   "Données d'interaction avec les annonces (vues, clics)"
+  ],
+  "ads_use": "Google utilise ces données pour afficher et mesurer les publicités. En savoir plus : <a href=\"https://policies.google.com/privacy\">Règles de confidentialité de Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Comment Google utilise les données des applications partenaires</a>.",
+  "consent": "Dans l'Espace économique européen, au Royaume-Uni, en Suisse et dans les autres régions où la loi l'exige, l'Application vous demande votre consentement via le formulaire de Google avant d'afficher des annonces personnalisées. Vous pouvez modifier votre choix à tout moment via « Paramètres de confidentialité » dans le menu des langues (icône du globe).",
+  "optout": "Vous pouvez aussi désactiver les annonces personnalisées sur votre appareil : sur Android, Paramètres → Google → Annonces ; sur iOS, Réglages → Confidentialité et sécurité → Suivi.",
+  "h_local": "Données stockées sur votre appareil",
+  "local": "Votre choix de langue est stocké uniquement sur votre appareil. Il n'est jamais envoyé à nous ni à aucun serveur et il est supprimé lorsque vous désinstallez l'Application.",
+  "h_children": "Confidentialité des enfants",
+  "children": "L'Application ne s'adresse pas aux enfants de moins de 13 ans et nous ne collectons pas sciemment d'informations personnelles auprès d'enfants. Les annonces sont diffusées conformément aux règles de Google AdMob. Si vous pensez qu'un enfant a fourni des informations personnelles via l'Application, contactez-nous et nous prendrons les mesures appropriées.",
+  "h_changes": "Modifications de cette politique",
+  "changes": "Nous pouvons mettre à jour cette politique de temps à autre. Les modifications seront publiées sur cette page avec une nouvelle date.",
+  "h_contact": "Nous contacter",
+  "contact": "Pour toute question concernant cette politique : <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "es": {
+  "name": "Español",
+  "title": "Política de privacidad — Bağlama Tuner",
+  "date": "Última actualización: 22 de octubre de 2026",
+  "intro": "Esta política de privacidad se aplica a la aplicación móvil <b>Bağlama Tuner</b> (la \"Aplicación\"), desarrollada y publicada por <b>Studio Ekin</b> (\"nosotros\"). Al usar la Aplicación, aceptas las prácticas descritas en esta política.",
+  "h_collect": "Información que recopilamos",
+  "collect": "No recopilamos, almacenamos ni compartimos directamente ninguna información personal. La Aplicación no requiere registro y no pide tu nombre, correo electrónico ni ningún otro dato personal.",
+  "h_mic": "Micrófono",
+  "mic": "La Aplicación usa el micrófono de tu dispositivo solo para escuchar tu instrumento y medir su afinación mientras afinas. El sonido se analiza en tiempo real en tu dispositivo; nunca se graba, se guarda ni se envía a nosotros ni a ningún servidor. El micrófono solo se usa mientras la pantalla del afinador está abierta, y puedes retirar el permiso en cualquier momento en los ajustes del dispositivo.",
+  "h_ads": "Servicios de terceros: publicidad",
+  "ads": "La Aplicación muestra anuncios de <b>Google AdMob</b>, un servicio de Google. AdMob puede recopilar y usar automáticamente ciertos datos, entre ellos:",
+  "items": [
+   "Identificadores del dispositivo (como el ID de publicidad)",
+   "Dirección IP y ubicación aproximada",
+   "Información del dispositivo (modelo, versión del sistema)",
+   "Datos de interacción con anuncios (vistas, clics)"
+  ],
+  "ads_use": "Google usa estos datos para mostrar y medir anuncios. Más información: <a href=\"https://policies.google.com/privacy\">Política de privacidad de Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Cómo usa Google los datos de las aplicaciones asociadas</a>.",
+  "consent": "En el Espacio Económico Europeo, el Reino Unido, Suiza y otras regiones donde la ley lo exige, la Aplicación pide tu consentimiento mediante el formulario de Google antes de mostrar anuncios personalizados. Puedes cambiar tu elección en cualquier momento en \"Ajustes de privacidad\" del menú de idiomas (icono del globo).",
+  "optout": "También puedes desactivar los anuncios personalizados en tu dispositivo: en Android, Ajustes → Google → Anuncios; en iOS, Ajustes → Privacidad y seguridad → Rastreo.",
+  "h_local": "Datos guardados en tu dispositivo",
+  "local": "Tu elección de idioma se guarda solo en tu dispositivo. Nunca se envía a nosotros ni a ningún servidor y se elimina al desinstalar la Aplicación.",
+  "h_children": "Privacidad de los niños",
+  "children": "La Aplicación no está dirigida a menores de 13 años y no recopilamos a sabiendas información personal de niños. Los anuncios se sirven conforme a las políticas de Google AdMob. Si crees que un niño ha facilitado información personal a través de la Aplicación, contáctanos y tomaremos las medidas oportunas.",
+  "h_changes": "Cambios en esta política",
+  "changes": "Podemos actualizar esta política de privacidad ocasionalmente. Los cambios se publicarán en esta página con una nueva fecha.",
+  "h_contact": "Contacto",
+  "contact": "Si tienes preguntas sobre esta política de privacidad, escríbenos a: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "it": {
+  "name": "Italiano",
+  "title": "Informativa sulla privacy — Bağlama Tuner",
+  "date": "Ultimo aggiornamento: 22 ottobre 2026",
+  "intro": "La presente informativa si applica all'app mobile <b>Bağlama Tuner</b> (l'\"App\"), sviluppata e pubblicata da <b>Studio Ekin</b> (\"noi\"). Usando l'App accetti le pratiche descritte in questa informativa.",
+  "h_collect": "Informazioni che raccogliamo",
+  "collect": "Non raccogliamo, conserviamo né condividiamo direttamente alcuna informazione personale. L'App non richiede registrazione e non chiede il tuo nome, indirizzo e-mail o altri dati personali.",
+  "h_mic": "Microfono",
+  "mic": "L'App usa il microfono del dispositivo solo per ascoltare il tuo strumento e misurarne l'intonazione mentre accordi. Il suono viene analizzato in tempo reale sul dispositivo; non viene mai registrato, salvato né inviato a noi o a un server. Il microfono è usato solo mentre la schermata dell'accordatore è aperta e puoi revocare il permesso in qualsiasi momento dalle impostazioni del dispositivo.",
+  "h_ads": "Servizi di terze parti: pubblicità",
+  "ads": "L'App mostra annunci forniti da <b>Google AdMob</b>, un servizio di Google. AdMob può raccogliere e utilizzare automaticamente alcuni dati, tra cui:",
+  "items": [
+   "Identificatori del dispositivo (come l'ID pubblicità)",
+   "Indirizzo IP e posizione approssimativa",
+   "Informazioni sul dispositivo (modello, versione del sistema)",
+   "Dati di interazione con gli annunci (visualizzazioni, clic)"
+  ],
+  "ads_use": "Google usa questi dati per mostrare e misurare gli annunci. Maggiori informazioni: <a href=\"https://policies.google.com/privacy\">Norme sulla privacy di Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Come Google utilizza i dati delle app partner</a>.",
+  "consent": "Nello Spazio economico europeo, nel Regno Unito, in Svizzera e nelle altre regioni in cui la legge lo richiede, l'App chiede il tuo consenso tramite il modulo di Google prima di mostrare annunci personalizzati. Puoi cambiare la tua scelta in qualsiasi momento da \"Impostazioni privacy\" nel menu delle lingue (icona del globo).",
+  "optout": "Puoi anche disattivare gli annunci personalizzati sul dispositivo: su Android, Impostazioni → Google → Annunci; su iOS, Impostazioni → Privacy e sicurezza → Tracciamento.",
+  "h_local": "Dati salvati sul dispositivo",
+  "local": "La lingua scelta viene salvata solo sul tuo dispositivo. Non viene mai inviata a noi né a un server e viene eliminata quando disinstalli l'App.",
+  "h_children": "Privacy dei minori",
+  "children": "L'App non è rivolta a minori di 13 anni e non raccogliamo consapevolmente informazioni personali dai minori. Gli annunci sono pubblicati secondo le norme di Google AdMob. Se ritieni che un minore abbia fornito informazioni personali tramite l'App, contattaci e adotteremo le misure opportune.",
+  "h_changes": "Modifiche a questa informativa",
+  "changes": "Potremmo aggiornare questa informativa di tanto in tanto. Le modifiche saranno pubblicate su questa pagina con una nuova data.",
+  "h_contact": "Contatti",
+  "contact": "Per domande su questa informativa scrivici a: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "pt": {
+  "name": "Português",
+  "title": "Política de privacidade — Bağlama Tuner",
+  "date": "Última atualização: 22 de outubro de 2026",
+  "intro": "Esta política de privacidade se aplica ao aplicativo móvel <b>Bağlama Tuner</b> (o \"Aplicativo\"), desenvolvido e publicado pela <b>Studio Ekin</b> (\"nós\"). Ao usar o Aplicativo, você concorda com as práticas descritas nesta política.",
+  "h_collect": "Informações que coletamos",
+  "collect": "Não coletamos, armazenamos nem compartilhamos diretamente nenhuma informação pessoal. O Aplicativo não exige cadastro e não pede seu nome, e-mail ou qualquer outro dado pessoal.",
+  "h_mic": "Microfone",
+  "mic": "O Aplicativo usa o microfone do seu dispositivo apenas para ouvir seu instrumento e medir a afinação enquanto você afina. O som é analisado em tempo real no seu dispositivo; nunca é gravado, armazenado ou enviado para nós ou para qualquer servidor. O microfone só é usado enquanto a tela do afinador está aberta, e você pode retirar a permissão a qualquer momento nas configurações do dispositivo.",
+  "h_ads": "Serviços de terceiros: publicidade",
+  "ads": "O Aplicativo exibe anúncios do <b>Google AdMob</b>, um serviço do Google. O AdMob pode coletar e usar automaticamente alguns dados, incluindo:",
+  "items": [
+   "Identificadores do dispositivo (como o ID de publicidade)",
+   "Endereço IP e localização aproximada",
+   "Informações do dispositivo (modelo, versão do sistema)",
+   "Dados de interação com anúncios (visualizações, cliques)"
+  ],
+  "ads_use": "O Google usa esses dados para exibir e medir anúncios. Saiba mais: <a href=\"https://policies.google.com/privacy\">Política de privacidade do Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Como o Google usa dados de apps parceiros</a>.",
+  "consent": "No Espaço Econômico Europeu, no Reino Unido, na Suíça e em outras regiões onde a lei exige, o Aplicativo pede seu consentimento pelo formulário do Google antes de exibir anúncios personalizados. Você pode mudar sua escolha a qualquer momento em \"Configurações de privacidade\" no menu de idiomas (ícone do globo).",
+  "optout": "Você também pode desativar anúncios personalizados no dispositivo: no Android, Configurações → Google → Anúncios; no iOS, Ajustes → Privacidade e Segurança → Rastreamento.",
+  "h_local": "Dados armazenados no seu dispositivo",
+  "local": "Sua escolha de idioma é armazenada apenas no seu dispositivo. Ela nunca é enviada para nós ou para qualquer servidor e é apagada quando você desinstala o Aplicativo.",
+  "h_children": "Privacidade de crianças",
+  "children": "O Aplicativo não é destinado a menores de 13 anos e não coletamos intencionalmente informações pessoais de crianças. Os anúncios são exibidos de acordo com as políticas do Google AdMob. Se você acredita que uma criança forneceu informações pessoais pelo Aplicativo, entre em contato e tomaremos as medidas adequadas.",
+  "h_changes": "Alterações nesta política",
+  "changes": "Podemos atualizar esta política de privacidade periodicamente. As alterações serão publicadas nesta página com uma nova data.",
+  "h_contact": "Contato",
+  "contact": "Se tiver dúvidas sobre esta política de privacidade, fale conosco: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "ru": {
+  "name": "Русский",
+  "title": "Политика конфиденциальности — Bağlama Tuner",
+  "date": "Последнее обновление: 22 октября 2026 г.",
+  "intro": "Настоящая политика конфиденциальности относится к мобильному приложению <b>Bağlama Tuner</b> («Приложение»), разработанному и опубликованному <b>Studio Ekin</b> («мы»). Используя Приложение, вы соглашаетесь с описанными здесь правилами.",
+  "h_collect": "Какие данные мы собираем",
+  "collect": "Мы напрямую не собираем, не храним и не передаём никакие персональные данные. Приложение не требует регистрации и не запрашивает ваше имя, адрес электронной почты или другие личные сведения.",
+  "h_mic": "Микрофон",
+  "mic": "Приложение использует микрофон устройства только для того, чтобы слышать ваш инструмент и измерять высоту звука во время настройки. Звук анализируется в реальном времени на вашем устройстве; он никогда не записывается, не сохраняется и не отправляется нам или на какой-либо сервер. Микрофон используется только пока открыт экран тюнера; разрешение можно отозвать в любой момент в настройках устройства.",
+  "h_ads": "Сторонние сервисы: реклама",
+  "ads": "Приложение показывает рекламу <b>Google AdMob</b> — сервиса Google. AdMob может автоматически собирать и использовать некоторые данные, в том числе:",
+  "items": [
+   "Идентификаторы устройства (например, рекламный идентификатор)",
+   "IP-адрес и примерное местоположение",
+   "Сведения об устройстве (модель, версия ОС)",
+   "Данные о взаимодействии с рекламой (показы, нажатия)"
+  ],
+  "ads_use": "Google использует эти данные для показа и оценки рекламы. Подробнее: <a href=\"https://policies.google.com/privacy\">Политика конфиденциальности Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Как Google использует данные из приложений партнёров</a>.",
+  "consent": "В Европейской экономической зоне, Великобритании, Швейцарии и других регионах, где этого требует закон, Приложение запрашивает ваше согласие через форму Google перед показом персонализированной рекламы. Изменить выбор можно в любое время через «Настройки конфиденциальности» в меню языков (значок глобуса).",
+  "optout": "Персонализированную рекламу можно также отключить на устройстве: в Android — Настройки → Google → Реклама; в iOS — Настройки → Конфиденциальность и безопасность → Отслеживание.",
+  "h_local": "Данные на вашем устройстве",
+  "local": "Выбранный язык хранится только на вашем устройстве. Он никогда не отправляется нам или на сервер и удаляется при удалении Приложения.",
+  "h_children": "Конфиденциальность детей",
+  "children": "Приложение не предназначено для детей младше 13 лет, и мы сознательно не собираем персональные данные детей. Реклама показывается в соответствии с правилами Google AdMob. Если вы считаете, что ребёнок передал персональные данные через Приложение, свяжитесь с нами, и мы примем меры.",
+  "h_changes": "Изменения политики",
+  "changes": "Мы можем время от времени обновлять эту политику. Изменения публикуются на этой странице с новой датой.",
+  "h_contact": "Связаться с нами",
+  "contact": "Вопросы об этой политике конфиденциальности направляйте по адресу: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "ar": {
+  "name": "العربية",
+  "title": "سياسة الخصوصية — Bağlama Tuner",
+  "date": "آخر تحديث: 22 أكتوبر 2026",
+  "intro": "تنطبق سياسة الخصوصية هذه على تطبيق الهاتف المحمول <b>Bağlama Tuner</b> (\"التطبيق\") الذي طورته ونشرته <b>Studio Ekin</b> (\"نحن\"). باستخدامك للتطبيق فإنك توافق على الممارسات الموضحة في هذه السياسة.",
+  "h_collect": "المعلومات التي نجمعها",
+  "collect": "لا نجمع أي معلومات شخصية بشكل مباشر ولا نخزنها ولا نشاركها. لا يتطلب التطبيق التسجيل ولا يطلب اسمك أو بريدك الإلكتروني أو أي بيانات شخصية أخرى.",
+  "h_mic": "الميكروفون",
+  "mic": "يستخدم التطبيق ميكروفون جهازك فقط لسماع آلتك الموسيقية وقياس طبقتها أثناء الضبط. يُحلَّل الصوت لحظيًا على جهازك؛ ولا يُسجَّل أو يُحفظ أو يُرسل إلينا أو إلى أي خادم أبدًا. لا يُستخدم الميكروفون إلا أثناء فتح شاشة الضبط، ويمكنك سحب الإذن في أي وقت من إعدادات الجهاز.",
+  "h_ads": "خدمات الطرف الثالث: الإعلانات",
+  "ads": "يعرض التطبيق إعلانات تقدمها <b>Google AdMob</b>، وهي خدمة من Google. قد تجمع AdMob بعض البيانات وتستخدمها تلقائيًا، ومنها:",
+  "items": [
+   "معرّفات الجهاز (مثل المعرّف الإعلاني)",
+   "عنوان IP والموقع التقريبي",
+   "معلومات الجهاز (الطراز وإصدار نظام التشغيل)",
+   "بيانات التفاعل مع الإعلانات (المشاهدات والنقرات)"
+  ],
+  "ads_use": "تستخدم Google هذه البيانات لعرض الإعلانات وقياسها. لمزيد من المعلومات: <a href=\"https://policies.google.com/privacy\">سياسة خصوصية Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">كيف تستخدم Google البيانات من التطبيقات الشريكة</a>.",
+  "consent": "في المنطقة الاقتصادية الأوروبية والمملكة المتحدة وسويسرا والمناطق الأخرى التي يفرض فيها القانون ذلك، يطلب التطبيق موافقتك عبر نموذج الموافقة من Google قبل عرض الإعلانات المخصّصة. يمكنك تغيير اختيارك في أي وقت من \"إعدادات الخصوصية\" في قائمة اللغات (رمز الكرة الأرضية).",
+  "optout": "يمكنك أيضًا إيقاف الإعلانات المخصّصة على جهازك: في Android عبر الإعدادات ← Google ← الإعلانات، وفي iOS عبر الإعدادات ← الخصوصية والأمان ← التتبع.",
+  "h_local": "البيانات المخزنة على جهازك",
+  "local": "يُحفظ اختيار اللغة على جهازك فقط. لا يُرسل إلينا أو إلى أي خادم أبدًا، ويُحذف عند إلغاء تثبيت التطبيق.",
+  "h_children": "خصوصية الأطفال",
+  "children": "التطبيق غير موجّه للأطفال دون 13 عامًا ولا نجمع عن علم معلومات شخصية من الأطفال. تُعرض الإعلانات وفق سياسات Google AdMob. إذا كنت تعتقد أن طفلًا قدّم معلومات شخصية عبر التطبيق، فتواصل معنا وسنتخذ الإجراء المناسب.",
+  "h_changes": "التغييرات على هذه السياسة",
+  "changes": "قد نحدّث سياسة الخصوصية هذه من وقت لآخر. ستُنشر التغييرات في هذه الصفحة مع تاريخ مراجعة جديد.",
+  "h_contact": "اتصل بنا",
+  "contact": "إذا كانت لديك أسئلة حول سياسة الخصوصية هذه، راسلنا على: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "fa": {
+  "name": "فارسی",
+  "title": "سیاست حریم خصوصی — Bağlama Tuner",
+  "date": "آخرین به‌روزرسانی: ۲۲ اکتبر ۲۰۲۶",
+  "intro": "این سیاست حریم خصوصی برای اپلیکیشن موبایل <b>Bağlama Tuner</b> («اپلیکیشن») که توسط <b>Studio Ekin</b> («ما») ساخته و منتشر شده است، کاربرد دارد. با استفاده از اپلیکیشن، رویه‌های شرح‌داده‌شده در این سیاست را می‌پذیرید.",
+  "h_collect": "اطلاعاتی که جمع‌آوری می‌کنیم",
+  "collect": "ما مستقیماً هیچ اطلاعات شخصی‌ای جمع‌آوری، ذخیره یا به اشتراک نمی‌گذاریم. اپلیکیشن نیازی به ثبت‌نام ندارد و نام، ایمیل یا هیچ اطلاعات شخصی دیگری از شما نمی‌خواهد.",
+  "h_mic": "میکروفون",
+  "mic": "اپلیکیشن فقط برای شنیدن ساز شما و اندازه‌گیری زیر و بمی صدا هنگام کوک کردن از میکروفون دستگاه استفاده می‌کند. صدا به‌صورت لحظه‌ای روی دستگاه شما تحلیل می‌شود و هرگز ضبط، ذخیره یا برای ما یا هیچ سروری ارسال نمی‌شود. میکروفون فقط هنگامی که صفحهٔ کوک باز است استفاده می‌شود و می‌توانید هر زمان اجازه را از تنظیمات دستگاه لغو کنید.",
+  "h_ads": "خدمات شخص ثالث: تبلیغات",
+  "ads": "اپلیکیشن تبلیغاتی از <b>Google AdMob</b>، یکی از خدمات Google، نمایش می‌دهد. AdMob ممکن است برخی داده‌ها را به‌طور خودکار جمع‌آوری و استفاده کند، از جمله:",
+  "items": [
+   "شناسه‌های دستگاه (مانند شناسهٔ تبلیغاتی)",
+   "نشانی IP و موقعیت تقریبی",
+   "اطلاعات دستگاه (مدل، نسخهٔ سیستم‌عامل)",
+   "داده‌های تعامل با تبلیغات (نمایش، کلیک)"
+  ],
+  "ads_use": "Google از این داده‌ها برای نمایش و سنجش تبلیغات استفاده می‌کند. اطلاعات بیشتر: <a href=\"https://policies.google.com/privacy\">سیاست حریم خصوصی Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">نحوهٔ استفادهٔ Google از داده‌های اپ‌های همکار</a>.",
+  "consent": "در منطقهٔ اقتصادی اروپا، بریتانیا، سوئیس و مناطق دیگری که قانون الزام می‌کند، اپلیکیشن پیش از نمایش تبلیغات شخصی‌سازی‌شده از طریق فرم رضایت Google از شما اجازه می‌گیرد. هر زمان می‌توانید انتخاب خود را از «تنظیمات حریم خصوصی» در منوی زبان (نماد کرهٔ زمین) تغییر دهید.",
+  "optout": "همچنین می‌توانید تبلیغات شخصی‌سازی‌شده را در دستگاه خاموش کنید: در Android از تنظیمات ← Google ← تبلیغات؛ در iOS از تنظیمات ← حریم خصوصی و امنیت ← ردیابی.",
+  "h_local": "داده‌های ذخیره‌شده در دستگاه شما",
+  "local": "زبان انتخابی شما فقط روی دستگاهتان ذخیره می‌شود. هرگز برای ما یا هیچ سروری ارسال نمی‌شود و با حذف اپلیکیشن پاک می‌شود.",
+  "h_children": "حریم خصوصی کودکان",
+  "children": "اپلیکیشن برای کودکان زیر ۱۳ سال نیست و ما آگاهانه از کودکان اطلاعات شخصی جمع‌آوری نمی‌کنیم. تبلیغات مطابق سیاست‌های Google AdMob نمایش داده می‌شوند. اگر فکر می‌کنید کودکی از طریق اپلیکیشن اطلاعات شخصی داده است، با ما تماس بگیرید تا اقدام مناسب را انجام دهیم.",
+  "h_changes": "تغییرات این سیاست",
+  "changes": "ممکن است این سیاست را گاه‌به‌گاه به‌روزرسانی کنیم. تغییرات با تاریخ جدید در همین صفحه منتشر می‌شود.",
+  "h_contact": "تماس با ما",
+  "contact": "برای پرسش دربارهٔ این سیاست حریم خصوصی با ما در تماس باشید: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "az": {
+  "name": "Azərbaycanca",
+  "title": "Məxfilik Siyasəti — Bağlama Tuner",
+  "date": "Son yenilənmə: 22 oktyabr 2026",
+  "intro": "Bu məxfilik siyasəti <b>Studio Ekin</b> (\"biz\") tərəfindən hazırlanmış və yayımlanmış <b>Bağlama Tuner</b> mobil tətbiqinə (\"Tətbiq\") aiddir. Tətbiqdən istifadə etməklə bu siyasətdə təsvir olunan qaydaları qəbul edirsiniz.",
+  "h_collect": "Topladığımız məlumatlar",
+  "collect": "Biz birbaşa heç bir şəxsi məlumat toplamır, saxlamır və paylaşmırıq. Tətbiq qeydiyyat tələb etmir; adınızı, e-poçt ünvanınızı və ya başqa şəxsi məlumatınızı istəmir.",
+  "h_mic": "Mikrofon",
+  "mic": "Tətbiq cihazınızın mikrofonundan yalnız kökləyərkən çaldığınız aləti eşitmək və səsin yüksəkliyini ölçmək üçün istifadə edir. Səs cihazınızda anında təhlil olunur; heç vaxt yazılmır, saxlanmır, bizə və ya hər hansı serverə göndərilmir. Mikrofon yalnız kökləmə ekranı açıq olanda istifadə olunur; icazəni istənilən vaxt cihaz ayarlarından geri ala bilərsiniz.",
+  "h_ads": "Üçüncü tərəf xidmətləri: reklam",
+  "ads": "Tətbiq Google-un xidməti olan <b>Google AdMob</b> tərəfindən təqdim edilən reklamlar göstərir. AdMob bəzi məlumatları avtomatik toplaya və istifadə edə bilər:",
+  "items": [
+   "Cihaz identifikatorları (Reklam ID-si kimi)",
+   "IP ünvanı və təxmini yer",
+   "Cihaz məlumatları (model, əməliyyat sistemi versiyası)",
+   "Reklamla qarşılıqlı əlaqə məlumatları (baxış, klik)"
+  ],
+  "ads_use": "Google bu məlumatlardan reklam göstərmək və ölçmək üçün istifadə edir. Ətraflı: <a href=\"https://policies.google.com/privacy\">Google Məxfilik Siyasəti</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Google tərəfdaş tətbiqlərin məlumatlarından necə istifadə edir</a>.",
+  "consent": "Avropa İqtisadi Zonası, Böyük Britaniya, İsveçrə və qanunun tələb etdiyi digər bölgələrdə Tətbiq fərdiləşdirilmiş reklam göstərmədən əvvəl Google-un razılıq forması ilə icazənizi istəyir. Seçiminizi istənilən vaxt dil menyusundakı (qlobus işarəsi) \"Məxfilik ayarları\" ilə dəyişə bilərsiniz.",
+  "optout": "Fərdiləşdirilmiş reklamları cihazınızda da söndürə bilərsiniz: Android-də Ayarlar → Google → Reklamlar; iOS-da Ayarlar → Məxfilik və Təhlükəsizlik → İzləmə.",
+  "h_local": "Cihazınızda saxlanan məlumatlar",
+  "local": "Dil seçiminiz yalnız cihazınızda saxlanır. Heç vaxt bizə və ya serverə göndərilmir və Tətbiqi sildikdə silinir.",
+  "h_children": "Uşaqların məxfiliyi",
+  "children": "Tətbiq 13 yaşdan kiçik uşaqlar üçün nəzərdə tutulmayıb və biz uşaqlardan bilərəkdən şəxsi məlumat toplamırıq. Reklamlar Google AdMob siyasətlərinə uyğun göstərilir. Bir uşağın Tətbiq vasitəsilə şəxsi məlumat verdiyini düşünürsünüzsə, bizimlə əlaqə saxlayın, lazımi tədbirləri görərik.",
+  "h_changes": "Bu siyasətdə dəyişikliklər",
+  "changes": "Bu məxfilik siyasətini vaxtaşırı yeniləyə bilərik. Dəyişikliklər bu səhifədə yeni tarixlə dərc olunur.",
+  "h_contact": "Bizimlə əlaqə",
+  "contact": "Bu məxfilik siyasəti ilə bağlı suallarınız üçün: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "el": {
+  "name": "Ελληνικά",
+  "title": "Πολιτική απορρήτου — Bağlama Tuner",
+  "date": "Τελευταία ενημέρωση: 22 Οκτωβρίου 2026",
+  "intro": "Η παρούσα πολιτική απορρήτου ισχύει για την εφαρμογή κινητού <b>Bağlama Tuner</b> (η «Εφαρμογή»), που αναπτύχθηκε και δημοσιεύεται από τη <b>Studio Ekin</b> («εμείς»). Χρησιμοποιώντας την Εφαρμογή, αποδέχεστε τις πρακτικές που περιγράφονται εδώ.",
+  "h_collect": "Πληροφορίες που συλλέγουμε",
+  "collect": "Δεν συλλέγουμε, δεν αποθηκεύουμε και δεν μοιραζόμαστε άμεσα προσωπικές πληροφορίες. Η Εφαρμογή δεν απαιτεί εγγραφή και δεν ζητά το όνομα, το email ή άλλα προσωπικά σας στοιχεία.",
+  "h_mic": "Μικρόφωνο",
+  "mic": "Η Εφαρμογή χρησιμοποιεί το μικρόφωνο της συσκευής μόνο για να ακούει το όργανό σας και να μετρά το τονικό ύψος κατά το κούρδισμα. Ο ήχος αναλύεται σε πραγματικό χρόνο στη συσκευή σας· δεν ηχογραφείται, δεν αποθηκεύεται και δεν αποστέλλεται ποτέ σε εμάς ή σε διακομιστή. Το μικρόφωνο χρησιμοποιείται μόνο όσο είναι ανοιχτή η οθόνη του κουρδιστηριού και μπορείτε να ανακαλέσετε την άδεια οποιαδήποτε στιγμή από τις ρυθμίσεις της συσκευής.",
+  "h_ads": "Υπηρεσίες τρίτων: διαφήμιση",
+  "ads": "Η Εφαρμογή προβάλλει διαφημίσεις από το <b>Google AdMob</b>, υπηρεσία της Google. Το AdMob μπορεί να συλλέγει και να χρησιμοποιεί αυτόματα ορισμένα δεδομένα, όπως:",
+  "items": [
+   "Αναγνωριστικά συσκευής (π.χ. αναγνωριστικό διαφήμισης)",
+   "Διεύθυνση IP και κατά προσέγγιση τοποθεσία",
+   "Πληροφορίες συσκευής (μοντέλο, έκδοση λειτουργικού)",
+   "Δεδομένα αλληλεπίδρασης με διαφημίσεις (προβολές, κλικ)"
+  ],
+  "ads_use": "Η Google χρησιμοποιεί αυτά τα δεδομένα για την προβολή και τη μέτρηση διαφημίσεων. Περισσότερα: <a href=\"https://policies.google.com/privacy\">Πολιτική απορρήτου της Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Πώς χρησιμοποιεί η Google δεδομένα από εφαρμογές συνεργατών</a>.",
+  "consent": "Στον Ευρωπαϊκό Οικονομικό Χώρο, στο Ηνωμένο Βασίλειο, στην Ελβετία και σε άλλες περιοχές όπου το απαιτεί ο νόμος, η Εφαρμογή ζητά τη συγκατάθεσή σας μέσω της φόρμας της Google πριν προβάλει εξατομικευμένες διαφημίσεις. Μπορείτε να αλλάξετε την επιλογή σας ανά πάσα στιγμή από τις «Ρυθμίσεις απορρήτου» στο μενού γλωσσών (εικονίδιο υδρογείου).",
+  "optout": "Μπορείτε επίσης να απενεργοποιήσετε τις εξατομικευμένες διαφημίσεις στη συσκευή σας: στο Android, Ρυθμίσεις → Google → Διαφημίσεις· στο iOS, Ρυθμίσεις → Απόρρητο και ασφάλεια → Παρακολούθηση.",
+  "h_local": "Δεδομένα στη συσκευή σας",
+  "local": "Η επιλογή γλώσσας αποθηκεύεται μόνο στη συσκευή σας. Δεν αποστέλλεται ποτέ σε εμάς ή σε διακομιστή και διαγράφεται όταν απεγκαταστήσετε την Εφαρμογή.",
+  "h_children": "Απόρρητο παιδιών",
+  "children": "Η Εφαρμογή δεν απευθύνεται σε παιδιά κάτω των 13 ετών και δεν συλλέγουμε εν γνώσει μας προσωπικές πληροφορίες από παιδιά. Οι διαφημίσεις προβάλλονται σύμφωνα με τις πολιτικές του Google AdMob. Αν πιστεύετε ότι ένα παιδί έδωσε προσωπικές πληροφορίες μέσω της Εφαρμογής, επικοινωνήστε μαζί μας και θα λάβουμε τα κατάλληλα μέτρα.",
+  "h_changes": "Αλλαγές στην πολιτική",
+  "changes": "Ενδέχεται να ενημερώνουμε την παρούσα πολιτική κατά καιρούς. Οι αλλαγές δημοσιεύονται σε αυτή τη σελίδα με νέα ημερομηνία.",
+  "h_contact": "Επικοινωνία",
+  "contact": "Για ερωτήσεις σχετικά με αυτήν την πολιτική απορρήτου: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "nl": {
+  "name": "Nederlands",
+  "title": "Privacybeleid — Bağlama Tuner",
+  "date": "Laatst bijgewerkt: 22 oktober 2026",
+  "intro": "Dit privacybeleid is van toepassing op de mobiele app <b>Bağlama Tuner</b> (de \"App\"), ontwikkeld en uitgegeven door <b>Studio Ekin</b> (\"wij\"). Door de App te gebruiken, gaat u akkoord met de hier beschreven werkwijze.",
+  "h_collect": "Welke gegevens we verzamelen",
+  "collect": "We verzamelen, bewaren of delen rechtstreeks geen persoonsgegevens. De App vereist geen registratie en vraagt niet om uw naam, e-mailadres of andere persoonlijke gegevens.",
+  "h_mic": "Microfoon",
+  "mic": "De App gebruikt de microfoon van uw apparaat alleen om uw instrument te horen en de toonhoogte te meten tijdens het stemmen. Het geluid wordt in realtime op uw apparaat geanalyseerd; het wordt nooit opgenomen, bewaard of naar ons of een server gestuurd. De microfoon wordt alleen gebruikt zolang het stemscherm open is en u kunt de toestemming op elk moment intrekken in de instellingen van uw apparaat.",
+  "h_ads": "Diensten van derden: advertenties",
+  "ads": "De App toont advertenties van <b>Google AdMob</b>, een dienst van Google. AdMob kan automatisch bepaalde gegevens verzamelen en gebruiken, waaronder:",
+  "items": [
+   "Apparaat-ID's (zoals de advertentie-ID)",
+   "IP-adres en globale locatie",
+   "Apparaatgegevens (model, versie van het besturingssysteem)",
+   "Gegevens over interactie met advertenties (weergaven, klikken)"
+  ],
+  "ads_use": "Google gebruikt deze gegevens om advertenties te tonen en te meten. Meer informatie: <a href=\"https://policies.google.com/privacy\">Privacybeleid van Google</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Hoe Google gegevens van partnerapps gebruikt</a>.",
+  "consent": "In de Europese Economische Ruimte, het Verenigd Koninkrijk, Zwitserland en andere regio's waar de wet dit vereist, vraagt de App via het toestemmingsformulier van Google om uw toestemming voordat gepersonaliseerde advertenties worden getoond. U kunt uw keuze op elk moment wijzigen via \"Privacyinstellingen\" in het taalmenu (wereldbol-pictogram).",
+  "optout": "U kunt gepersonaliseerde advertenties ook op uw apparaat uitschakelen: op Android via Instellingen → Google → Advertenties; op iOS via Instellingen → Privacy en beveiliging → Tracking.",
+  "h_local": "Gegevens op uw apparaat",
+  "local": "Uw taalkeuze wordt alleen op uw apparaat opgeslagen. Ze wordt nooit naar ons of naar een server gestuurd en wordt verwijderd wanneer u de App verwijdert.",
+  "h_children": "Privacy van kinderen",
+  "children": "De App is niet bedoeld voor kinderen jonger dan 13 jaar en we verzamelen niet bewust persoonsgegevens van kinderen. Advertenties worden getoond volgens het beleid van Google AdMob. Denkt u dat een kind via de App persoonsgegevens heeft verstrekt, neem dan contact met ons op; we nemen passende maatregelen.",
+  "h_changes": "Wijzigingen in dit beleid",
+  "changes": "We kunnen dit privacybeleid van tijd tot tijd bijwerken. Wijzigingen worden op deze pagina gepubliceerd met een nieuwe datum.",
+  "h_contact": "Contact",
+  "contact": "Vragen over dit privacybeleid? Mail ons: <a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "ja": {
+  "name": "日本語",
+  "title": "プライバシーポリシー — Bağlama Tuner",
+  "date": "最終更新日：2026年10月22日",
+  "intro": "本プライバシーポリシーは、<b>Studio Ekin</b>（以下「当社」）が開発・公開するモバイルアプリ<b>Bağlama Tuner</b>（以下「本アプリ」）に適用されます。本アプリを使用することで、本ポリシーに記載された取り扱いに同意したものとみなされます。",
+  "h_collect": "収集する情報",
+  "collect": "当社は個人情報を直接収集、保存、共有することはありません。本アプリは登録不要で、お名前、メールアドレス、その他の個人情報を求めません。",
+  "h_mic": "マイク",
+  "mic": "本アプリは、チューニング中に楽器の音を聴いて音高を測るためだけにデバイスのマイクを使用します。音声はデバイス上でリアルタイムに解析され、録音・保存されたり、当社やサーバーへ送信されたりすることは一切ありません。マイクはチューナー画面が開いている間のみ使用され、許可はデバイスの設定からいつでも取り消せます。",
+  "h_ads": "第三者サービス：広告",
+  "ads": "本アプリは、Googleのサービスである<b>Google AdMob</b>の広告を表示します。AdMobは次のようなデータを自動的に収集・使用する場合があります。",
+  "items": [
+   "デバイス識別子（広告IDなど）",
+   "IPアドレスとおおよその位置情報",
+   "デバイス情報（機種、OSバージョン）",
+   "広告とのやり取りのデータ（表示、クリック）"
+  ],
+  "ads_use": "Googleはこれらのデータを広告の表示と測定に使用します。詳細：<a href=\"https://policies.google.com/privacy\">Googleプライバシーポリシー</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Googleによるパートナーアプリのデータの使用方法</a>。",
+  "consent": "欧州経済領域、英国、スイス、その他法律で求められる地域では、パーソナライズ広告を表示する前に、Googleの同意フォームで同意を求めます。選択は言語メニュー（地球アイコン）の「プライバシー設定」からいつでも変更できます。",
+  "optout": "パーソナライズ広告はデバイスでもオフにできます。Android：設定 → Google → 広告、iOS：設定 → プライバシーとセキュリティ → トラッキング。",
+  "h_local": "デバイスに保存されるデータ",
+  "local": "言語の選択はお使いのデバイスにのみ保存されます。当社やサーバーへ送信されることはなく、本アプリを削除すると消去されます。",
+  "h_children": "子どものプライバシー",
+  "children": "本アプリは13歳未満の子どもを対象としておらず、当社が子どもから個人情報を意図的に収集することはありません。広告はGoogle AdMobのポリシーに従って配信されます。子どもが本アプリを通じて個人情報を提供したと思われる場合はご連絡ください。適切に対応します。",
+  "h_changes": "本ポリシーの変更",
+  "changes": "本ポリシーは随時更新されることがあります。変更は新しい日付とともにこのページに掲載されます。",
+  "h_contact": "お問い合わせ",
+  "contact": "本プライバシーポリシーに関するご質問は次までご連絡ください：<a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ },
+ "zh": {
+  "name": "中文",
+  "title": "隐私政策 — Bağlama Tuner",
+  "date": "最后更新：2026年10月22日",
+  "intro": "本隐私政策适用于由<b>Studio Ekin</b>（\"我们\"）开发并发布的移动应用<b>Bağlama Tuner</b>（\"本应用\"）。使用本应用即表示您同意本政策所述的做法。",
+  "h_collect": "我们收集的信息",
+  "collect": "我们不会直接收集、存储或共享任何个人信息。本应用无需注册，也不会要求您提供姓名、电子邮件地址或其他个人信息。",
+  "h_mic": "麦克风",
+  "mic": "本应用仅在调音时使用设备麦克风来聆听您的乐器并测量音高。声音在您的设备上实时分析，绝不会被录制、保存或发送给我们或任何服务器。麦克风仅在调音器界面打开时使用，您可以随时在设备设置中撤销该权限。",
+  "h_ads": "第三方服务：广告",
+  "ads": "本应用展示由 Google 提供的<b>Google AdMob</b>广告。AdMob 可能会自动收集并使用某些数据，包括：",
+  "items": [
+   "设备标识符（如广告 ID）",
+   "IP 地址和大致位置",
+   "设备信息（型号、操作系统版本）",
+   "广告互动数据（展示、点击）"
+  ],
+  "ads_use": "Google 使用这些数据来展示和衡量广告。了解更多：<a href=\"https://policies.google.com/privacy\">Google 隐私权政策</a> · <a href=\"https://policies.google.com/technologies/partner-sites\">Google 如何使用合作伙伴应用中的数据</a>。",
+  "consent": "在欧洲经济区、英国、瑞士及其他法律要求的地区，本应用会在展示个性化广告前通过 Google 的同意表单征求您的同意。您可以随时通过语言菜单（地球图标）中的\"隐私设置\"更改选择。",
+  "optout": "您也可以在设备上关闭个性化广告：Android 上为 设置 → Google → 广告；iOS 上为 设置 → 隐私与安全性 → 跟踪。",
+  "h_local": "存储在您设备上的数据",
+  "local": "您的语言选择仅保存在您的设备上，绝不会发送给我们或任何服务器，卸载本应用时会被删除。",
+  "h_children": "儿童隐私",
+  "children": "本应用不面向 13 岁以下儿童，我们不会故意收集儿童的个人信息。广告按照 Google AdMob 政策投放。如您认为有儿童通过本应用提供了个人信息，请联系我们，我们将采取适当措施。",
+  "h_changes": "本政策的变更",
+  "changes": "我们可能会不时更新本隐私政策。变更将连同新的日期发布在本页面上。",
+  "h_contact": "联系我们",
+  "contact": "如对本隐私政策有任何疑问，请联系：<a href=\"mailto:fadiyezz@gmail.com\">fadiyezz@gmail.com</a>"
+ }
+};
+function show(k) {
+  const t = L[k];
+  document.documentElement.lang = k;
+  document.documentElement.dir = (k === "ar" || k === "fa") ? "rtl" : "ltr";
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-date").textContent = t.date;
+  const sec = (h, ...ps) => `<h2>${h}</h2>` + ps.map(p => p.startsWith("<ul>") ? p : `<p>${p}</p>`).join("");
+  document.getElementById("content").innerHTML =
+    `<p>${t.intro}</p>` +
+    sec(t.h_collect, t.collect) +
+    sec(t.h_mic, t.mic) +
+    sec(t.h_ads, t.ads, "<ul>" + t.items.map(i => `<li>${i}</li>`).join("") + "</ul>", t.ads_use, t.consent, t.optout) +
+    sec(t.h_local, t.local) +
+    sec(t.h_children, t.children) +
+    sec(t.h_changes, t.changes) +
+    sec(t.h_contact, t.contact);
+}
+const sel = document.getElementById("lang");
+sel.innerHTML = Object.entries(L).map(([k, v]) => `<option value="${k}">${v.name}</option>`).join("");
+// ?lang=xx, sonra tarayıcı dili, sonra İngilizce.
+const want = new URLSearchParams(location.search).get("lang") || (navigator.language || "en").slice(0, 2).toLowerCase();
+const start = L[want] ? want : "en";
+sel.value = start;
+sel.onchange = () => show(sel.value);
+show(start);
+</script>
+</body>
+</html>
